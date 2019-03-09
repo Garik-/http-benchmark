@@ -4,6 +4,7 @@ const { join } = require('path')
 const port = process.env.PORT || 9001
 const data = readFileSync(join(__dirname, '../data.json'))
 const app = uWS.App().get('/', (res) => {
+  res.writeHeader('Content-Type', 'application/json')
   res.end(data)
 }).listen(port, (token) => {
   if (token) {
