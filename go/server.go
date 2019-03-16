@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"runtime"
 )
 
-var data string
+var data []byte
 
 func HomeRouterHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
-	fmt.Fprintf(w, data)
+	w.Write(data)
 }
 
 func check(c string, e error) {
@@ -21,9 +21,11 @@ func check(c string, e error) {
 }
 
 func main() {
-	dat, err := ioutil.ReadFile("../data.json")
+	runtime.GOMAXPROCS(1) // to be more similar to node.js
+
+	var err error
+	data, err = ioutil.ReadFile("../data.json")
 	check("ReadFile: ", err)
-	data = string(dat)
 	http.HandleFunc("/", HomeRouterHandler)
 	err = http.ListenAndServe(":9000", nil)
 	check("ListenAndServe: ", err)

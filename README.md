@@ -23,3 +23,30 @@ node.js|2513.90
 node.js with uWS|32726|894
 node.js|32737|895.8
 golang|28663|1026.2
+
+## Alternative load testing
+### ab
+```
+$ ab -n 100000 -kc 100 http://localhost:3000/
+```
+|Language|Data size|RPS|
+--- | --- | --- |
+node.js|big|6197
+go stdlib|big|6181
+go fasthttp|big|7183
+node.js|small|13124
+go stdlib|small|24377
+go fasthttp|small|84639
+
+### wrk
+```
+$ wrk -c 100 -d 10 -t 2 http://localhost:3000/
+```
+|Language|Data size|RPS|
+--- | --- | --- |
+node.js|big|9642
+go stdlib|big|11520
+go fasthttp|big|14071
+node.js|small|24677
+go stdlib|small|46439
+go fasthttp|small|95183
